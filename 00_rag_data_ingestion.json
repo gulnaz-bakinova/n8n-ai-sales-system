@@ -1,0 +1,184 @@
+{
+  "name": "00_rag_data_ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "**Purpose:** RAG Ingestion Pipeline (Knowledge Base Setup).\n\n**Logic:** This workflow is responsible for data preparation. It fetches plain text from the database, converts it into high-dimensional vectors (embeddings) using the Gemini model, and stores them in Supabase (pgvector).\n\n**Why it's here:** This ensures the AI Agent has a searchable semantic index to provide accurate answers based on company-specific data.",
+        "height": 176,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "cc8637e6-b489-4b32-a439-5f4464e29450",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bd036ed3-2446-4408-b3de-ece37632c9a6",
+      "name": "Manual Ingestion Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM ai_fiance_objections",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "28242d4a-8a0d-4027-90a9-3314e4d13d6b",
+      "name": "Fetch Raw Knowledge Base",
+      "credentials": {
+        "postgres": {
+          "id": "x1x72Oxty0iHZCbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "ai_finance_objections",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "2b289676-bca5-4c3c-8564-07b335d394b9",
+      "name": "Vectorize & Sync to Supabase",
+      "credentials": {
+        "postgres": {
+          "id": "x1x72Oxty0iHZCbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        416,
+        192
+      ],
+      "id": "ff6112e4-3133-4520-a6a6-853c1d3b8518",
+      "name": "Gemini Embedding Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "RzetGnudu0MJh2PV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.Keywords_RU }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "objection_id",
+                "value": "={{ $json.objection_id }}"
+              },
+              {
+                "name": "answer_ru",
+                "value": "={{ $json.Answer_RU }}"
+              },
+              {
+                "name": "answer_kz",
+                "value": "={{ $json.Answer_KZ }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        192
+      ],
+      "id": "e8952766-8eb1-40c1-814f-70237c22e091",
+      "name": "Document Parser"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Ingestion Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Raw Knowledge Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Raw Knowledge Base": {
+      "main": [
+        [
+          {
+            "node": "Vectorize & Sync to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Embedding Model": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Vectorize & Sync to Supabase",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Parser": {
+      "ai_document": [
+        [
+          {
+            "node": "Vectorize & Sync to Supabase",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2bc471c9-b0fe-4406-8150-dd626f8d62b3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "03b67b3e60aa493ec1244124aace506e5b72662a5ebfe65ae58c0d351a372da8"
+  },
+  "id": "kTneqKnA7CzTZFgv",
+  "tags": []
+}

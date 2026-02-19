@@ -1,0 +1,411 @@
+{
+  "name": "03_batch_insights_analyst",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b01c32e1-948e-4bb4-a4d6-9af2ed04fa7f",
+      "name": "Manual Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo",
+          "mode": "list",
+          "cachedResultName": "F_User_Status",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 562222098,
+          "mode": "list",
+          "cachedResultName": "History",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit#gid=562222098"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fda329d9-825a-434d-9251-34edf04ee65e",
+      "name": "Fetch Raw Chat History",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "22akbm2gYXgL33dL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 100,
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "bff8f860-60e8-45a8-a455-56aa7cebfd82",
+      "name": "Limit to 100 Recent Interactions"
+    },
+    {
+      "parameters": {
+        "jsCode": "const logs = $input.all().map(item => {\n  return `Клиент: ${item.json.last_message_client} | Бот: ${item.json.last_message_bot} | Статус: ${item.json.status}`;\n}).join('\\n---\\n');\n\nreturn { logs_text: logs };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ff813c57-d6f4-414c-96c6-0694b976f3a5",
+      "name": "Format Logs for LLM Context"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Проанализируй следующие логи переписки:\\n\\n {{ $json.logs_text }}\n",
+        "options": {
+          "systemMessage": "Ты — эксперт по воронкам продаж и анализу скриптов. Твоя задача — проанализировать логи переписки WhatsApp-бота и найти слабые и сильные места.\nОТВЕЧАЙ СТРОГО В JSON:\n{\n\"drop_off_points\": \"Где и после каких фраз клиенты чаще всего замолкают?\",\n\"top_objections\": \"Топ-3 причины отказов\",\n\"success_triggers\": \"Какие фразы или этапы вызвали наибольший интерес и переходы к регистрации?\",\n\"recommendations\": \"Что конкретно поменять в скрипте сегодня?\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "ccb44185-69ed-4ebb-bb38-e8521fa5092d",
+      "name": "LLM Analytics Engine (Gemini)"
+    },
+    {
+      "parameters": {
+        "jsCode": "let rawString = $input.item.json.output || \"\";\n\ntry {\n  // Убираем лишнее, если AI добавил разметку\n  const cleanString = rawString.toString()\n    .replace(/```json/g, '')\n    .replace(/```/g, '')\n    .trim();\n\n  return JSON.parse(cleanString);\n} catch (e) {\n  return { \n    error: \"Parse failed\",\n    drop_off_points: \"Ошибка анализа\",\n    top_objections: \"Ошибка анализа\",\n    success_triggers: \"Ошибка анализа\",\n    recommendations: \"Ошибка анализа\"\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "b9d8c9a0-1c74-4294-9a73-0821ed25b154",
+      "name": "Extract Structured Insights"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo",
+          "mode": "list",
+          "cachedResultName": "F_User_Status",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1062424736,
+          "mode": "list",
+          "cachedResultName": "Analytics_Reports",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit#gid=1062424736"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "date": "={{ $now }}",
+            "total_chats_analyzed": "={{ $('Limit to 100 Recent Interactions').all().length }}",
+            "drop_off_points": "={{ $json.drop_off_points }}",
+            "top_objections": "={{ $json.top_objections }}",
+            "success_triggers": "={{ $json.success_triggers }}",
+            "recommendations": "={{ $json.recommendations }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total_chats_analyzed",
+              "displayName": "total_chats_analyzed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "drop_off_points",
+              "displayName": "drop_off_points",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "top_objections",
+              "displayName": "top_objections",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "success_triggers",
+              "displayName": "success_triggers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recommendations",
+              "displayName": "recommendations",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1392,
+        0
+      ],
+      "id": "27da752d-9c5a-4d44-8ae9-c9fedce125e4",
+      "name": "Persist Analytics Report",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "22akbm2gYXgL33dL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.kz/v1/whatsapp/send-message/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node[\"Login_Token\"].json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=📊 ОТЧЕТ ПО АНАЛИТИКЕ СКРИПТА\n\n📉 Точки отвала: \n{{ $json.drop_off_points }}\n\n🚫 Частые возражения: \n{{ $json.top_objections }}\n\n✅ Что сработало: \n{{ $json.success_triggers }}\n\n💡 Рекомендации: \n{{ $json.recommendations }}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1584,
+        0
+      ],
+      "id": "ff1b059e-b678-4325-8d01-a203914e00a3",
+      "name": "Push Report to Stakeholders (WhatsApp)",
+      "retryOnFail": false,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        832,
+        224
+      ],
+      "id": "b15cd9a5-8876-40f9-9cb9-d85dea5b2345",
+      "name": "Google Gemini Chat Model",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "RzetGnudu0MJh2PV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "**Workflow Purpose:** Automated Batch Analytics of AI-Client interactions.\n**Logic:** This process fetches the last 100 chat logs, aggregates them into a contextual string, and uses an LLM to identify sales script bottlenecks, common objections, and high-conversion triggers.\n**Output:** Insights are saved to a historical database and pushed to management via WhatsApp for real-time sales optimization.",
+        "height": 192,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "4f2d25a7-07ee-4436-bc64-a8004f0a0b03",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Data sanitization & context compression for token efficiency.",
+        "height": 112,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        576,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "02a51ed0-b24c-4dfc-b1ff-c4665c8c61cf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Transformation of unstructured AI analysis into actionable data fields.",
+        "height": 112,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "62c4666c-1742-4044-8efd-2dd88bc5920e",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Raw Chat History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Raw Chat History": {
+      "main": [
+        [
+          {
+            "node": "Limit to 100 Recent Interactions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit to 100 Recent Interactions": {
+      "main": [
+        [
+          {
+            "node": "Format Logs for LLM Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Logs for LLM Context": {
+      "main": [
+        [
+          {
+            "node": "LLM Analytics Engine (Gemini)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Analytics Engine (Gemini)": {
+      "main": [
+        [
+          {
+            "node": "Extract Structured Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Structured Insights": {
+      "main": [
+        [
+          {
+            "node": "Persist Analytics Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Persist Analytics Report": {
+      "main": [
+        [
+          {
+            "node": "Push Report to Stakeholders (WhatsApp)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LLM Analytics Engine (Gemini)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c4d2d791-ab5f-401a-80f6-e01996e227f9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "03b67b3e60aa493ec1244124aace506e5b72662a5ebfe65ae58c0d351a372da8"
+  },
+  "id": "pNeHVnT7X9PLd1t1",
+  "tags": []
+}

@@ -1,0 +1,75 @@
+{
+  "name": "90_test_mock_provider",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b1b22d5e-c9d2-47d5-ab66-7c94736eaff0",
+      "name": "Manual Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://railway.app/webhook-test/ai_finance",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"chatId\": \"77700000000@c.us\",\n  \"phone\": \"77700000000\",\n  \"name\": \"Test Client\",\n  \"messageId\": \"TEST_ID_12345\",\n  \"type\": \"text\",\n  \"message\": \"нужен менеджер\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b92d63ab-1fcd-49ee-8998-60d9a7011591",
+      "name": "Simulate Incoming WhatsApp Message"
+    },
+    {
+      "parameters": {
+        "content": "**Purpose:** Testing Utility (Mock Provider).\n\n**How it works:** This workflow acts as a simulator. It sends a pre-defined JSON payload (mimicking ChatApp/WhatsApp behavior) to the Main Bot's Webhook.\n\n**Benefit:** This allows full end-to-end testing of AI logic, CRM updates, and RAG retrieval even without a real phone connection.",
+        "height": 208,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -16,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "fbae1618-91ec-4621-8c85-e5ac8ebfeabf",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Simulate Incoming WhatsApp Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6d3af8f0-0c33-473a-a022-de27e0010052",
+  "meta": {
+    "instanceId": "03b67b3e60aa493ec1244124aace506e5b72662a5ebfe65ae58c0d351a372da8"
+  },
+  "id": "RgWLHQ2srgoifxbu",
+  "tags": []
+}

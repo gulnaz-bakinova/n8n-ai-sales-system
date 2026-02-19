@@ -1,0 +1,165 @@
+{
+  "name": "02_retention_followup_worker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "id": "a18c6ad1-38fa-407c-9687-8412861883eb",
+      "name": "Daily Schedule Check (11 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -5984,
+        2800
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo",
+          "mode": "list",
+          "cachedResultName": "F_User_Status",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Main",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1M0KIX2lDEJmUu0YgaFvW_qz6nrPfGkqT1E1tzhQPWOo/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -5744,
+        2800
+      ],
+      "id": "5eb13650-a2e1-4f14-ba92-d8005bc865e0",
+      "name": "Fetch CRM Database",
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "22akbm2gYXgL33dL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем всех пользователей\nconst users = $input.all();\nconst currentTime = new Date().getTime();\n\nreturn users.filter(user => {\n  const data = user.json;\n  const status = data.status; // Твоя колонка status\n  \n  // 1. ПРОВЕРКА СТАТУСА\n  // Разрешаем, если статус \"3_messages\" ИЛИ статус вообще пустой (null/undefined/\"\")\n  const isTargetStatus = status === '3_messages' || !status || status === '';\n  \n  // Жесткий запрет (на всякий случай, хотя логика выше их и так не пустит, но для надежности)\n  const isForbidden = status === 'manager' || status === 'stage_offer' || status === 'negative';\n\n  // 2. ПРОВЕРКА ВРЕМЕНИ (ВЧЕРАШНИЕ)\n  // Нам нужны те, кто молчит больше 20 часов, но меньше 50 часов (чтобы не писать древним лидам)\n  let isYesterday = true;\n  if (data.last_updated) {\n     const lastUpdate = new Date(data.last_updated).getTime();\n     const hoursDiff = (currentTime - lastUpdate) / (1000 * 60 * 60);\n     if (hoursDiff < 20 || hoursDiff > 50) isYesterday = false;\n  }\n\n  // ИТОГ: Статус подходит И (НЕ запрещен) И (это было вчера)\n  return isTargetStatus && !isForbidden && isYesterday;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5520,
+        2800
+      ],
+      "id": "0018bede-616a-4a26-875f-853019c12c78",
+      "name": "Filter Inactive Leads (24h+)"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "820372807828674",
+        "recipientPhoneNumber": "=7870100000000",
+        "textBody": "=Добрый день!\nВы вчера проходили регистрацию на сайте.  \n\nХотели уточнить, всё ли у Вас получилось, может нужна помощь или у Вас есть вопросы. Мы готовы помочь.",
+        "additionalFields": {}
+      },
+      "id": "9b6b1468-616c-4812-b5d9-309cb16155e5",
+      "name": "Send Automated Re-engagement",
+      "type": "n8n-nodes-base.whatsApp",
+      "position": [
+        -5296,
+        2800
+      ],
+      "webhookId": "7d4c8a62-6fbc-49b5-9058-0dadd4f1c226",
+      "typeVersion": 1,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "oRQghFn2tPdwRGWi",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "**Purpose:** Re-engagement of inactive leads to boost conversion.\n\n**Logic:** This workflow runs once a day. It scans the database for leads who haven't responded for >24 hours.\n\n**Safety Filters:**\n- Only contacts with is_bot_active = TRUE.\n- Skips leads in manager, stage_offer, or negative status.\n- Prevents spam by checking the time window (24-48h).",
+        "height": 224,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6032,
+        2512
+      ],
+      "typeVersion": 1,
+      "id": "985d9c50-e9a8-4585-9789-c912b52c3193",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily Schedule Check (11 AM)": {
+      "main": [
+        [
+          {
+            "node": "Fetch CRM Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch CRM Database": {
+      "main": [
+        [
+          {
+            "node": "Filter Inactive Leads (24h+)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Inactive Leads (24h+)": {
+      "main": [
+        [
+          {
+            "node": "Send Automated Re-engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "65d0e959-f65b-47b5-b9be-e81080c1ced1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "03b67b3e60aa493ec1244124aace506e5b72662a5ebfe65ae58c0d351a372da8"
+  },
+  "id": "rLrUuyk9SJI5Iatj",
+  "tags": []
+}
