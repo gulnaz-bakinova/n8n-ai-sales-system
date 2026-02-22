@@ -33,7 +33,8 @@ This document outlines the high-level architecture and data flow of the n8n AI S
 ### Layer 4: AI Brain & RAG Engine
 - **Agentic Routing:** The AI decides whether to reply directly, use the RAG tool, or escalate to a human.
 - **RAG Integration:** If the user asks a specific policy/pricing question or raises an objection, the AI queries the Supabase vector store (`objections` tool).
-- **Structured Output:** The LLM is strictly prompted to output JSON containing `reply`, `lead_score`, `lead_status`, and `reason`.
+- **Structured Output & Intent Routing:** The LLM is strictly prompted to return a specific JSON schema (output, lead_score, lead_status, reason). The output field acts as an execution trigger—returning either natural conversational text or strict system codes (e.g., SEND_INITIAL_OFFER, MANAGER, TERMINATE_CONVERSATION, FORWARD_CONTACT_TO_MANAGER) to drive the deterministic n8n state machine.
+
 
 ---
 
