@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    # Используем образ с поддержкой pgvector для RAG/Embeddings
+    # Use an image with pgvector support for RAG/Embeddings
     image: ankane/pgvector:latest
     container_name: n8n_postgres
     restart: always
