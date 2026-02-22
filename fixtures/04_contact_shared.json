@@ -1,0 +1,12 @@
+{
+  "chatId": "77700000004@c.us",
+  "phone": "77700000004",
+  "name": "Director",
+  "messageId": "MSG_CONTACT_004",
+  "type": "contact",
+  "message": "",
+  "contact": {
+    "name": "Бухгалтер Анна",
+    "phone": "77700000000"
+  }
+}
