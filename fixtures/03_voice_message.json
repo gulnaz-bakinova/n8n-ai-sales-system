@@ -1,0 +1,9 @@
+{
+  "chatId": "77700000003@c.us",
+  "phone": "77700000003",
+  "name": "Audio Client",
+  "messageId": "MSG_VOICE_003",
+  "type": "voice",
+  "message": "",
+  "mediaUrl": "https://example.com/sample_audio.ogg"
+}
