@@ -45,3 +45,13 @@ All unhandled exceptions are caught by the `99_global_incident_handler` workflow
 2. Go to the n8n dashboard -> Executions.
 3. Paste the ID in the search bar.
 4. Pin the input data on the failed node to rerun and test fixes safely.
+
+## Edge Cases Handling Matrix
+
+| Edge Case | System Behavior (Mitigation) |
+|---|---|
+| **Duplicate Webhook** | Intercepted at Layer 1 via `messageId` DB lookup. Returns 200 OK, halts execution. |
+| **External API Timeout** | Exponential backoff (3 retries, 5s delay). If failed, triggers DLQ. |
+| **LLM Invalid JSON Output** | Caught by `Parse JSON` custom `try/catch`. Defaults to `MANAGER` intent to force human handoff. |
+| **Network Outage / Node Crash** | Caught by Global Error Handler. State saved to `dead_letters` table for manual replay. |
+| **Manager Interrupts Bot** | Admin sends `/stop`. Updates `is_bot_active=FALSE`. Bot physically ignores future webhooks. |
