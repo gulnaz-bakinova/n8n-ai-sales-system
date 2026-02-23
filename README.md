@@ -24,12 +24,14 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 *(See the visual representation of the business logic and state machine).*
 
 ### Core Business Features
-1. **State Machine Routing:** Leads are strictly guided through a sales funnel (`Discovery` -> `Education` -> `Closing`) based on their CRM `stage_id`.
-2. **RAG Knowledge Base:** Integrated with **Supabase (pgvector)** to dynamically retrieve official company policies and overcome client objections without LLM hallucinations.
-3. **Multimodal Processing:** Native handling of Audio (Speech-to-Text via Whisper), Images (Vision AI), and vCard contacts, normalizing everything into a single text stream.
-4. **Smart Lead Scoring:** The LLM evaluates user intent, assigns a score (0-100), and classifies the lead as Cold/Warm/Hot in the CRM.
-5. **Batch Analytics Worker:** A cron-triggered workflow aggregates daily chat logs and uses an LLM to generate insights (drop-off points, top objections, success triggers).
-6. **Automated Follow-ups:** Automatically re-engages users who have been inactive for >24 hours to boost conversion rates.
+| Feature | Description |
+| :--- | :--- |
+| 1. **State Machine Routing** | Leads are strictly guided through a sales funnel (`Discovery` -> `Education` -> `Closing`) based on their CRM `stage_id`. |
+| 2. **RAG Knowledge Base** | Integrated with **Supabase (pgvector)** to dynamically retrieve official company policies and overcome client objections without LLM hallucinations. |
+| 3. **Multimodal Processing** | Native handling of Audio (Speech-to-Text via Whisper), Images (Vision AI), and vCard contacts, normalizing everything into a single text stream. |
+| 4. **Smart Lead Scoring** | The LLM evaluates user intent, assigns a score (0-100), and classifies the lead as Cold/Warm/Hot in the CRM.|
+| 5. **Batch Analytics Worker** | A cron-triggered workflow aggregates daily chat logs and uses an LLM to generate insights (drop-off points, top objections, success triggers). |
+| 6. **Automated Follow-ups** | Automatically re-engages users who have been inactive for >24 hours to boost conversion rates. |
 
 ---
 
