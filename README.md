@@ -20,8 +20,9 @@
 
 The project is built as a highly modular, event-driven pipeline in **n8n**. 
 
-![System Architecture] [./assets/00_system_architecture_diagram.jpg](./assets/00_system_architecture_diagram.jpg)
-*(See the visual representation of the business logic and state machine).*
+<img src="./assets/00_system_architecture_diagram.jpg" width="500" alt="System Architecture">
+
+*See the visual representation of the business logic and state machine.*
 
 ### Core Business Features
 | Feature | Description |
@@ -52,12 +53,12 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 ### Workflows (n8n JSON)
 | Workflow | Description |
 | :--- | :--- |
-| [`00_rag_data_ingestion.json`](00_rag_data_ingestion.json) | **Data Prep.** Vectorizes the Knowledge Base and syncs it to Supabase (pgvector). |
-| [`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json) | **The Brain.** Core logic: State machine, LLM routing, RAG retrieval, and Handoffs. |
-| [`02_retention_followup_worker.json`](02_retention_followup_worker.json) | **Cron Job.** Daily scan to automatically re-engage leads inactive for >24 hours. |
-| [`03_batch_insights_analyst.json`](03_batch_insights_analyst.json) | **Analytics.** Fetches 100 recent logs and uses LLM to generate script conversion insights. |
-| [`90_test_mock_provider.json`](90_test_mock_provider.json) | **QA Tool.** Simulates incoming WhatsApp payloads (Text, Voice, Contacts) for local testing. |
-| [`99_global_incident_handler.json`](99_global_incident_handler.json) | **DLQ.** Global error catcher that writes to a Dead Letter Queue and sends Telegram alerts. |
+| [00_rag_data_ingestion.json](00_rag_data_ingestion.json) | **Data Prep.** Vectorizes the Knowledge Base and syncs it to Supabase (pgvector). |
+| [01_core_ai_sales_agent.json](01_core_ai_sales_agent.json) | **The Brain.** Core logic: State machine, LLM routing, RAG retrieval, and Handoffs. |
+| [02_retention_followup_worker.json](02_retention_followup_worker.json) | **Cron Job.** Daily scan to automatically re-engage leads inactive for >24 hours. |
+| [03_batch_insights_analyst.json](03_batch_insights_analyst.json) | **Analytics.** Fetches 100 recent logs and uses LLM to generate script conversion insights. |
+| [90_test_mock_provider.json](90_test_mock_provider.json) | **QA Tool.** Simulates incoming WhatsApp payloads (Text, Voice, Contacts) for local testing. |
+| [99_global_incident_handler.json](99_global_incident_handler.json) | **DLQ.** Global error catcher that writes to a Dead Letter Queue and sends Telegram alerts. |
 
 ### Documentation (`/docs`)
 * 📄 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — System components, data flow, and State Machine logic.
@@ -68,11 +69,11 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 * 🚀 [Deployment](./docs/DEPLOYMENT.md) — Planned infrastructure and Docker setup.
 
 ### Assets (`/assets`)
-* 🗺️ [`00_system_architecture_diagram.jpg`](./assets/00_system_architecture_diagram.jpg) — Miro flow diagram.
-* 📊 [`01_metrics_dashboard.png`](./assets/01_metrics_dashboard.png) — Business analytics dashboard.
-* 🗄️ [`02_supabase_pgvector.png`](./assets/02_supabase_pgvector.png) — RAG vector database structure.
-* 📝 [`03_scripts_db.png`](./assets/03_scripts_db.png) — Prompt variables.
-* 📝 [`04_crm_db.png`](./assets/04_crm_db.png) — Google Sheets CRM.
+* 🗺️ [00_system_architecture_diagram.jpg](./assets/00_system_architecture_diagram.jpg) — Miro flow diagram.
+* 📊 [01_metrics_dashboard.png](./assets/01_metrics_dashboard.png) — Business analytics dashboard.
+* 🗄️ [02_supabase_pgvector.png](./assets/02_supabase_pgvector.png) — RAG vector database structure.
+* 📝 [03_scripts_db.png](./assets/03_scripts_db.png) — Prompt variables.
+* 📝 [04_crm_db.png](./assets/04_crm_db.png) — Google Sheets CRM.
 
 ---
 
@@ -84,7 +85,7 @@ Since the project is provider-agnostic, you can test the entire logic without a 
 2. Configure credentials (or use mock data) based on the [.env.example](/.env.example).
 3. Open the **[90_test_mock_provider.json](/90_test_mock_provider.json)** workflow.
 4. Paste any payload from the [`/fixtures/`](/fixtures/) folder into the HTTP Request node and execute.
-5. Monitor the execution in the **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)** workflow to observe State routing, RAG retrieval, and JSON output parsing.
+5. Monitor the execution in the **[01_core_ai_sales_agent.json](01_core_ai_sales_agent.json)** workflow to observe State routing, RAG retrieval, and JSON output parsing.
 
 ---
 
