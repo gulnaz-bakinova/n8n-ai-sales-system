@@ -20,8 +20,15 @@
 
 Проект построен как модульный, событийно-ориентированный пайплайн (Event-driven pipeline) на базе **n8n**. 
 
-![Архитектура системы] [./assets/00_system_architecture_diagram.jpg](./assets/00_system_architecture_diagram.jpg)
-*(Визуализация бизнес-логики и машины состояний).*
+<img src="./assets/00_system_architecture_diagram.jpg" width="500" alt="System Architecture">
+
+*Визуализация бизнес-логики и машины состояний.*
+
+**Реальный пайплайн n8n:**
+
+<img src="./assets/05_n8n_workflow_overview.png" width="1000" alt="n8n Workflow">
+
+*Производственный n8n-воркфлоу с мультимодальной обработкой, RAG и изолированными этапами стейт-машины.*
 
 ### Ключевые бизнес-функции
 | Функция | Описание |
@@ -32,6 +39,11 @@
 | 4. **Умный скоринг лидов** | LLM оценивает намерения пользователя, выдает оценку от 0 до 100 и классифицирует теплоту лида (Cold/Warm/Hot) напрямую в CRM. |
 | 5. **Пакетная аналитика (Batch Analytics Worker)** | Отдельный воркфлоу по расписанию агрегирует логи чатов и с помощью ИИ генерирует инсайты (точки отвала, топ возражений, триггеры успешных конверсий). |
 | 6. **Автоматический Follow-up** | Бот самостоятельно возвращает к диалогу пользователей, которые молчат более 24 часов, повышая итоговую конверсию. |
+
+
+**Дашборд бизнес-аналитики:**
+
+<img src="./assets/01_metrics_dashboard.png" width="800" alt="Metrics Dashboard">
 
 ---
 
@@ -52,12 +64,12 @@
 ### Воркфлоу (n8n JSON)
 | Файл | Описание |
 | :--- | :--- |
-| [`00_rag_data_ingestion.json`](00_rag_data_ingestion.json) | **Подготовка данных.** Векторизация базы знаний и загрузка в Supabase (pgvector). |
-| [`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json) | **Мозг системы.** Основная логика: State machine, маршрутизация ИИ, RAG и эскалации. |
-| [`02_retention_followup_worker.json`](02_retention_followup_worker.json) | **Дожим.** Ежедневный запуск для возврата лидов, которые молчат более 24 часов. |
-| [`03_batch_insights_analyst.json`](03_batch_insights_analyst.json) | **Аналитика.** Сбор логов и LLM-анализ точек отвала и возражений. |
-| [`90_test_mock_provider.json`](90_test_mock_provider.json) | **Инструмент QA.** Симулятор входящих сообщений WhatsApp (Текст, Голос, Контакты) для тестов. |
-| [`99_global_incident_handler.json`](99_global_incident_handler.json) | **DLQ.** Глобальный перехватчик ошибок: запись в лог и отправка алертов в Telegram. |
+| [00_rag_data_ingestion.json](00_rag_data_ingestion.json) | **Подготовка данных.** Векторизация базы знаний и загрузка в Supabase (pgvector). |
+| [01_core_ai_sales_agent.json](01_core_ai_sales_agent.json) | **Мозг системы.** Основная логика: State machine, маршрутизация ИИ, RAG и эскалации. |
+| [02_retention_followup_worker.json](02_retention_followup_worker.json) | **Дожим.** Ежедневный запуск для возврата лидов, которые молчат более 24 часов. |
+| [03_batch_insights_analyst.json](03_batch_insights_analyst.json) | **Аналитика.** Сбор логов и LLM-анализ точек отвала и возражений. |
+| [90_test_mock_provider.json](90_test_mock_provider.json) | **Инструмент QA.** Симулятор входящих сообщений WhatsApp (Текст, Голос, Контакты) для тестов. |
+| [99_global_incident_handler.json](99_global_incident_handler.json) | **DLQ.** Глобальный перехватчик ошибок: запись в лог и отправка алертов в Telegram. |
 
 ### Документация (`/docs`)
 * 📄 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — Компоненты системы, поток данных и машина состояний.
@@ -68,11 +80,11 @@
 * 🚀 [Deployment](./docs/DEPLOYMENT.md) — Инфраструктура и стратегия деплоя.
 
 ### Медиа (`/assets`)
-* 🗺️ [`00_system_architecture_diagram.jpg`](./assets/00_system_architecture_diagram.jpg) — Схема логики из Miro.
-* 📊 [`01_metrics_dashboard.png`](./assets/01_metrics_dashboard.png) — Дашборд аналитики.
-* 🗄️ [`02_supabase_pgvector.png`](./assets/02_supabase_pgvector.png) — Структура векторной БД (RAG).
-* 📝 [`03_scripts_db.png`](./assets/03_scripts_db.png) — Тексты скриптов.
-* 📝 [`04_crm_db.png`](./assets/04_crm_db.png) — CRM в Google Таблицах.
+* 🗺️ [00_system_architecture_diagram.jpg](./assets/00_system_architecture_diagram.jpg) — Схема логики из Miro.
+* 📊 [01_metrics_dashboard.png](./assets/01_metrics_dashboard.png) — Дашборд аналитики.
+* 🗄️ [02_supabase_pgvector.png](./assets/02_supabase_pgvector.png) — Структура векторной БД (RAG).
+* 📝 [03_scripts_db.png](./assets/03_scripts_db.png) — Тексты скриптов.
+* 📝 [04_crm_db.png](./assets/04_crm_db.png) — CRM в Google Таблицах.
 
 ---
 
@@ -84,7 +96,7 @@
 2. Настройте credentials (или используйте mock-данные), опираясь на файл [.env.example](/.env.example).
 3. Откройте воркфлоу **[90_test_mock_provider.json](/90_test_mock_provider.json)**.
 4. Скопируйте любой JSON-payload из папки [`/fixtures/`](/fixtures/) в ноду HTTP Request и выполните запуск.
-5. Откройте **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)**, чтобы наблюдать за маршрутизацией State Machine, работой RAG и парсингом JSON-ответов от ИИ.
+5. Откройте **[01_core_ai_sales_agent.json](01_core_ai_sales_agent.json)**, чтобы наблюдать за маршрутизацией State Machine, работой RAG и парсингом JSON-ответов от ИИ.
 
 ---
 
