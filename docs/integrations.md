@@ -1,6 +1,6 @@
 # Integrations & API Contracts
 
-This system is designed to be **provider-agnostic**. The core n8n workflow does not depend on specific WhatsApp provider nodes. Instead, it relies on a standardized HTTP Webhook payload.
+> This system is designed to be **provider-agnostic**. The core n8n workflow does not depend on specific WhatsApp provider nodes. Instead, it relies on a standardized HTTP Webhook payload.
 
 ## 1. Ingress Webhook Contract
 
@@ -20,13 +20,15 @@ Any messaging provider (ChatApp, Twilio, 360dialog, WATI) can be integrated by m
 ```
 
 **Field Definitions:**
-- `chatId` *(String, Required)*: The unique chat identifier used by the provider to route the reply.
-- `phone` *(String, Required)*: User's phone number, used as the Primary Key in the Google Sheets CRM.
-- `name` *(String, Optional)*: User's display name for personalized messaging.
-- `messageId` *(String, Required)*: Crucial for **Idempotency**. Checked against the `processed_events` table to drop duplicate webhooks.
-- `type` *(String, Required)*: Used by the Content Classification Router. Supported types: `text`, `voice`, `image`, `contact`.
-- `message` *(String, Conditional)*: The text payload (required if `type=text`).
-- `mediaUrl` *(String, Conditional)*: URL to download the asset (required if `type=voice` or `type=image`).
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `chatId` | *(String, Required)* | The unique chat identifier used by the provider to route the reply. |
+| `phone` | *(String, Required)* | User's phone number, used as the Primary Key in the Google Sheets CRM. |
+| `name` | *(String, Optional)* | User's display name for personalized messaging. |
+| `messageId` | *(String, Required)* | Crucial for **Idempotency**. Checked against the `processed_events` table to drop duplicate webhooks. |
+| `type` | *(String, Required)* | Used by the Content Classification Router. Supported types: `text`, `voice`, `image`, `contact`. |
+| `message` | *(String, Conditional)* | The text payload (required if `type=text`). |
+| `mediaUrl` | *(String, Conditional)* | URL to download the asset (required if `type=voice` or `type=image`). |
 
 **Webhook Response**
 - The n8n Webhook node is configured to return a **`200 OK` immediately** upon receiving the payload.
