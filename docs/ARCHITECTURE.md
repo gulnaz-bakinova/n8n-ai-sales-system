@@ -47,7 +47,7 @@ This document outlines the high-level architecture and data flow of the n8n AI S
 
 ## State Machine & Handoff Policy
 
-The conversation flow is strictly governed by a centralized State Machine, visually mapped in [/assets/00_system_architecture_diagram.png](/assets/00_system_architecture_diagram.png).
+The conversation flow is strictly governed by a centralized State Machine, visually mapped in [/assets/00_system_architecture_diagram.jpg](/assets/00_system_architecture_diagram.jpg).
 - **Transitions:** `Stage 1 (Discovery)` → `Stage 2 (Education)` → `Stage 3 (Closing)`.
 - **Escalation Policy:** Handoff to a human manager is triggered automatically if:
 1) The user explicitly requests a human.
