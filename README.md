@@ -60,3 +60,16 @@ Since the project is provider-agnostic, you can test the entire logic without a 
 3. Open the **[90_test_mock_provider.json](/90_test_mock_provider.json)** workflow.
 4. Paste any payload from the [`/fixtures/`](/fixtures/) folder into the HTTP Request node and execute.
 5. Monitor the execution in the **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)** workflow to observe State routing, RAG retrieval, and JSON output parsing.
+
+---
+
+### 👤 Author
+
+**Gulnaz Bakinova**
+
+*Integration & Automation Engineer (n8n / Low-code)*
+
+Let's connect!
+[LinkedIn](https://www.linkedin.com/in/gulnaz-bakinova/) 
+
+*This repository is provided for portfolio and demonstration purposes only*
