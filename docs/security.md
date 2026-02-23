@@ -1,6 +1,6 @@
 # Security & Data Privacy
 
-This project was built with strict security guidelines, making it suitable for production environments, particularly in FinTech or data-sensitive sectors.
+> This project was built with strict security guidelines, making it suitable for production environments, particularly in FinTech or data-sensitive sectors.
 
 ## 1. Secrets Management
 | Security Measure  | Implementation |
