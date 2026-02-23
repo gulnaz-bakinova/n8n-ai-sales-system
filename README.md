@@ -55,6 +55,6 @@ Since the project is provider-agnostic, you can test the entire logic without a 
 
 1. Import the workflows into your n8n instance.
 2. Configure credentials (or use mock data) based on the [.env.example](/.env.example).
-3. Open the **[90_test_mock_provider](/90_test_mock_provider)** workflow.
+3. Open the **[90_test_mock_provider.json](/90_test_mock_provider.json)** workflow.
 4. Paste any payload from the `/fixtures` folder into the HTTP Request node and execute.
 5. Monitor the execution in the **`01_core_ai_sales_agent`** workflow to observe State routing, RAG retrieval, and JSON output parsing.
