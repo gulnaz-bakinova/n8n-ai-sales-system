@@ -13,7 +13,7 @@
 
 The project is built as a highly modular, event-driven pipeline in **n8n**. 
 
-![System Architecture](./assets/00_system_architecture_diagram.jpg)
+![System Architecture] [./assets/00_system_architecture_diagram.jpg](./assets/00_system_architecture_diagram.jpg)
 *(See the visual representation of the business logic and state machine).*
 
 ### Core Business Features
@@ -34,18 +34,18 @@ This project implements Senior-level automation patterns to ensure it survives i
 *   **API Resilience:** All external API calls (LLM, Database) utilize Exponential Backoff (Retries) to survive rate limits (`HTTP 429`) and network blips.
 *   **Security & PII Masking:** A dedicated `PII_Guard` code node intercepts the payload, masking phone numbers and redacting credit card formats before data reaches the LLM or logs.
 *   **Human-in-the-Loop (Kill-Switch):** Managers can take over any chat by sending a `/stop` command, which updates the DB and physically severs the AI's ability to reply to that lead.
-*   **Externalized Prompts:** System instructions are decoupled from logic nodes and versioned as Markdown files (see `/prompts`).
+*   **Externalized Prompts:** System instructions are decoupled from logic nodes and versioned as Markdown files (see [/prompts](/prompts) ).
 
 ---
 
 ## Repository Structure
 
-- `/` — Core n8n Workflow JSON exports.
-- `/docs/` — Deep-dive documentation (`ARCHITECTURE.md`, `RUNBOOK.md`, `integrations.md`, `security.md`, `TEST_SCENARIOS.md`).
-- `/prompts/` — Version-controlled LLM System Instructions.
-- `/fixtures/` — Sample JSON payloads for testing different edge cases (Text, Voice, Contacts).
-- `/docker/` — Production-ready `docker-compose.yml` (n8n + Postgres/pgvector).
-- `/assets/` — Architecture diagrams and Dashboard screenshots.
+- [`/`](/) — Core n8n Workflow JSON exports.
+- [`/docs/`](/docs/) — Deep-dive documentation (`ARCHITECTURE.md`, `RUNBOOK.md`, `integrations.md`, `security.md`, `TEST_SCENARIOS.md`).
+- [`/prompts/`](/prompts/) — Version-controlled LLM System Instructions.
+- [`/fixtures/`](/fixtures/) — Sample JSON payloads for testing different edge cases (Text, Voice, Contacts).
+- [`/docker/`](/docker/) — Production-ready `docker-compose.yml` (n8n + Postgres/pgvector).
+- [`/assets/`](/assets/) — Architecture diagrams and Dashboard screenshots.
 
 ---
 
@@ -54,7 +54,7 @@ This project implements Senior-level automation patterns to ensure it survives i
 Since the project is provider-agnostic, you can test the entire logic without a real WhatsApp connection:
 
 1. Import the workflows into your n8n instance.
-2. Configure credentials (or use mock data) based on the `.env.example`.
-3. Open the **`90_test_mock_provider`** workflow.
+2. Configure credentials (or use mock data) based on the [.env.example](../.env.example).
+3. Open the **[90_test_mock_provider](../90_test_mock_provider)** workflow.
 4. Paste any payload from the `/fixtures` folder into the HTTP Request node and execute.
 5. Monitor the execution in the **`01_core_ai_sales_agent`** workflow to observe State routing, RAG retrieval, and JSON output parsing.
