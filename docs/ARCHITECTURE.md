@@ -44,3 +44,13 @@ This document outlines the high-level architecture and data flow of the n8n AI S
 2. **Retry Mechanism:** Exponential backoff (3 retries, 5s wait) is configured on all external API calls (LLM, Database) to handle temporary network/rate-limit issues.
 3. **Batch Analytics:** A standalone worker runs daily to aggregate chat logs, analyze drop-off points, and generate optimization reports.
 4. **Automated Follow-up:** A cron-triggered workflow checks for leads inactive for >24 hours and sends a re-engagement message.
+
+## State Machine & Handoff Policy
+
+The conversation flow is strictly governed by a centralized State Machine, visually mapped in [/assets/00_system_architecture_diagram.png](/assets/00_system_architecture_diagram.png).
+- **Transitions:** `Stage 1 (Discovery)` → `Stage 2 (Education)` → `Stage 3 (Closing)`.
+- **Escalation Policy:** Handoff to a human manager is triggered automatically if:
+1) The user explicitly requests a human.
+2) The user expresses negative sentiment (triggers DNC).
+3) The RAG tool fails to find a confident answer.
+4) The AI outputs a JSON parsing error.
