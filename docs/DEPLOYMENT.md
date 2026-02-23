@@ -14,7 +14,7 @@ Although the project was paused before production rollout, the system architectu
 
 ## Secrets Management
 - No secrets are committed to the repository.
-- A `.env.example` file is provided. In production, variables are injected via Docker environment files or Railway Secrets Manager.
+- A [.env.example] (.env.example) file is provided. In production, variables are injected via Docker environment files or Railway Secrets Manager.
 
 ## Backup Strategy
 - **n8n Workflows:** Nightly automated exports to a secure S3 bucket.
