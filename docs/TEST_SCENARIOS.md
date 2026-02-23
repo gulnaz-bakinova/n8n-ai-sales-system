@@ -9,6 +9,6 @@ This document outlines the core test cases used to evaluate the AI Agent's inten
 | **3. Negative Guardrail** | "Отстаньте, удалите мой номер" | Trigger DNC logic -> `TERMINATE_CONVERSATION` | Marked `is_bot_active=FALSE`, closed lead | ✅ Pass |
 | **4. Human Handoff** | "Я хочу поговорить с менеджером" | Escalate -> `MANAGER` | Alerted admin via WhatsApp, paused AI | ✅ Pass |
 | **5. Multimedia (Audio)** | *(Voice message asking about price)* | Whisper STT -> Classify -> Respond | Transcribed, categorized as pricing query, answered | ✅ Pass |
-| **6. Lead Referral (Contact)** | "Это не ко мне, свяжитесь с бухгалтером: Айжан 87771112233" | Forward details -> `FORWARD_CONTACT_TO_MANAGER` | Extracted contact, confirmed to user, alerted manager | ✅ Pass |
+| **6. Lead Referral (Contact)** | "Это не ко мне, свяжитесь с директором: Айжан 87771112233" | Forward details -> `FORWARD_CONTACT_TO_MANAGER` | Extracted contact, confirmed to user, alerted manager | ✅ Pass |
 
 *Note: All scenarios are manually verified after any Prompt or Architecture update.*
