@@ -5,7 +5,7 @@ Although the project was paused before production rollout, the system architectu
 ## Infrastructure Plan
 1. **Application Logic (n8n):**
    - *Current (Staging):* Railway App (Cloud).
-   - *Production Target:* Self-hosted VPS using Docker Compose (see `/docker/docker-compose.yml`) to ensure data residency compliance and cost control.
+   - *Production Target:* Self-hosted VPS using Docker Compose (see [/docker/docker-compose.yml](/docker/docker-compose.yml)) to ensure data residency compliance and cost control.
 2. **Database & Vector Store:**
    - *Current:* Google Sheets (Operational CRM) + Supabase (pgvector for RAG).
    - *Production Target:* Migrate Google Sheets state management entirely to Postgres to avoid Google API rate limits (`HTTP 429`) under heavy broadcast loads.
