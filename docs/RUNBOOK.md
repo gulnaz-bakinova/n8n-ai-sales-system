@@ -2,7 +2,7 @@
 
 > This document outlines troubleshooting steps for the most common failure scenarios in the AI Sales Agent workflow. 
 
-All unhandled exceptions are caught by the [99_global_incident_handler.json](..99_global_incident_handler.json) workflow, which logs the error to the Google Sheets DLQ (Dead Letter Queue) and sends a Telegram alert.
+All unhandled exceptions are caught by the [99_global_incident_handler.json](../99_global_incident_handler.json) workflow, which logs the error to the Google Sheets DLQ (Dead Letter Queue) and sends a Telegram alert.
 
 ---
 
