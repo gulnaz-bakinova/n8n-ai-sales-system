@@ -1,6 +1,6 @@
 # Deployment Strategy
 
-Although the project was paused before production rollout, the system architecture is designed for high availability and easy deployment.
+> Although the project was paused before production rollout, the system architecture is designed for high availability and easy deployment.
 
 ## Infrastructure Plan
 1. **Application Logic (n8n):**
