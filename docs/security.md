@@ -3,10 +3,12 @@
 This project was built with strict security guidelines, making it suitable for production environments, particularly in FinTech or data-sensitive sectors.
 
 ## 1. Secrets Management
-- **No Hardcoded Credentials:** All API keys (Gemini, Supabase, Telegram), database passwords, and provider tokens are managed via **n8n Credentials Vault**.
-- **Environment Variables:** The `.env` file is heavily `.gitignore`d. Only a sanitized `.env.example` is provided in this repository to illustrate the required configuration without exposing actual secrets.
-- **Workflow Export:** All exported JSON workflows in this repository have been stripped of credential bindings.
-- **Token Lifecycle, Rotation & Least Privilege:** All third-party connections utilize n8n's abstracted credentials vault. For OAuth2 flows (e.g., Google Sheets), n8n handles automatic token refreshes to prevent `401 Unauthorized` errors. Both OAuth scopes and static API keys (e.g., Supabase, Telegram) strictly follow the Principle of Least Privilege. Key rotation is managed externally without requiring application downtime.
+| Security Measure  | Implementation |
+| :--- | :--- |
+| **No Hardcoded Credentials** | All API keys (Gemini, Supabase, Telegram), database passwords, and provider tokens are managed via **n8n Credentials Vault**. |
+| **Environment Variables** | The `.env` file is heavily `.gitignore`d. Only a sanitized `.env.example` is provided in this repository to illustrate the required configuration without exposing actual secrets. |
+| **Workflow Export** | All exported JSON workflows in this repository have been stripped of credential bindings. |
+| **Token Lifecycle, Rotation & Least Privilege** | All third-party connections utilize n8n's abstracted credentials vault. For OAuth2 flows (e.g., Google Sheets), n8n handles automatic token refreshes to prevent `401 Unauthorized` errors. Both OAuth scopes and static API keys (e.g., Supabase, Telegram) strictly follow the Principle of Least Privilege. Key rotation is managed externally without requiring application downtime. |
 
 ## 2. PII Data Masking (Data Privacy)
 Before any user message is sent to external LLM providers (e.g., Google Gemini) or logged into the analytics database, the system executes a **PII Guard Node (Regex/Code)**.
