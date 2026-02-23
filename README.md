@@ -4,6 +4,11 @@
 
 > **Core Positioning:** A production-ready WhatsApp sales assistant that drives conversations via a strict state-machine script, handles objections using a Vector Knowledge Base (RAG), qualifies leads (Scoring), executes automated follow-ups, and seamlessly hands off to human managers. Engineered for high reliability using deduplication, exponential retries, and centralized error handling.
 
+![n8n](https://img.shields.io/badge/n8n-Workflow_Automation-EA4B71?style=flat-square&logo=n8n)
+![Gemini](https://img.shields.io/badge/Google_Gemini-AI_Agent-4285F4?style=flat-square&logo=google)
+![Supabase](https://img.shields.io/badge/Supabase-pgvector_RAG-3ECF8E?style=flat-square&logo=supabase)
+![Status](https://img.shields.io/badge/Status-MVP_Delivered-success?style=flat-square)
+
 ## Project Context & Status
 - **Status:** MVP successfully delivered and tested (Inbound routing → AI Dialog & RAG → Handoff / Follow-up). Currently paused by the client due to internal budget restructuring.
 - **Cross-Functional Collaboration:** Worked closely with the client's internal development team to design, negotiate, and establish the API integration contracts and Webhook payloads.
@@ -42,12 +47,29 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 
 ## Repository Structure
 
-- [`/`](/) — Core n8n Workflow JSON exports.
-- [`/docs/`](/docs/) — Deep-dive documentation (`ARCHITECTURE.md`, `RUNBOOK.md`, `integrations.md`, `security.md`, `TEST_SCENARIOS.md`).
-- [`/prompts/`](/prompts/) — Version-controlled LLM System Instructions.
-- [`/fixtures/`](/fixtures/) — Sample JSON payloads for testing different edge cases (Text, Voice, Contacts).
-- [`/docker/`](/docker/) — Production-ready `docker-compose.yml` (n8n + Postgres/pgvector).
-- [`/assets/`](/assets/) — Architecture diagrams and Dashboard screenshots.
+### Workflows (n8n JSON)
+| Workflow | Description |
+| :--- | :--- |
+| [`00_rag_data_ingestion.json`](00_rag_data_ingestion.json) | **Data Prep.** Vectorizes the Knowledge Base and syncs it to Supabase (pgvector). |
+| [`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json) | **The Brain.** Core logic: State machine, LLM routing, RAG retrieval, and Handoffs. |
+| [`02_retention_followup_worker.json`](02_retention_followup_worker.json) | **Cron Job.** Daily scan to automatically re-engage leads inactive for >24 hours. |
+| [`03_batch_insights_analyst.json`](03_batch_insights_analyst.json) | **Analytics.** Fetches 100 recent logs and uses LLM to generate script conversion insights. |
+| [`90_test_mock_provider.json`](90_test_mock_provider.json) | **QA Tool.** Simulates incoming WhatsApp payloads (Text, Voice, Contacts) for local testing. |
+| [`99_global_incident_handler.json`](99_global_incident_handler.json) | **DLQ.** Global error catcher that writes to a Dead Letter Queue and sends Telegram alerts. |
+
+### Documentation (`/docs`)
+* 📄 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — System components, data flow, and State Machine logic.
+* 🔌 [Integrations & API](./docs/integrations.md) — Provider-agnostic Webhook contracts and payload specs.
+* 🔒 [Security](./docs/security.md) — Secrets management, PII masking, and Human-in-the-loop guardrails.
+* 📖 [Runbook](./docs/RUNBOOK.md) — Troubleshooting guide and edge-case handling matrix.
+* 🧪 [Test Scenarios](./docs/TEST_SCENARIOS.md) — Golden set of test cases (RAG, Objections, Escalations).
+* 🚀 [Deployment](./docs/DEPLOYMENT.md) — Planned infrastructure and Docker setup.
+
+### Assets (`/assets`)
+* 🗺️ [`00_system_architecture_diagram.jpg`](00_system_architecture_diagram.jpg) — Miro flow diagram.
+* 📊 [`01_metrics_dashboard.png`](01_metrics_dashboard.png) — Business analytics dashboard.
+* 🗄️ [`02_supabase_pgvector.png`](02_supabase_pgvector.png) — RAG vector database structure.
+* 📝 [`03_crm_and_scripts_db.png`](03_crm_and_scripts_db.png) — Google Sheets CRM and prompt variables.
 
 ---
 
