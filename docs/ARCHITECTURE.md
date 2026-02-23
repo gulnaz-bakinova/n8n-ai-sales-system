@@ -15,7 +15,7 @@ This document outlines the high-level architecture and data flow of the n8n AI S
 ## Pipeline Layers (Main Workflow)
 
 ### Layer 1: Ingress & Security (Gateway)
-- **Idempotency:** Every incoming webhook is checked against a `processed_events` table using its unique `messageId`. Duplicates are dropped immediately.
+- **Idempotency & Correlation:** The incoming messageId acts as both the idempotency key (dropping duplicates in the processed_events table) and the **Correlation ID**. It is preserved across the entire multimodal pipeline (voice/text/images) allowing full end-to-end distributed tracing.
 - **Command Listener:** Scans for `/stop` or `/start` to allow human agents to take over (Kill-Switch).
 - **PII Guard:** Masks phone numbers and redacts credit card patterns before data proceeds to logs or LLM inputs.
 
