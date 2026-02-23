@@ -4,6 +4,11 @@
 
 > **Позиционирование:** Production-ready WhatsApp ассистент продаж. Ведет диалог по жесткому скрипту (State Machine), отрабатывает возражения через векторную базу знаний (RAG), квалифицирует лидов (Lead Scoring), делает follow-up и бесшовно передает диалог менеджеру. Система устойчиво работает за счет дедупликации вебхуков, retry-политик и централизованной обработки ошибок (DLQ).
 
+![n8n](https://img.shields.io/badge/n8n-Автоматизация-EA4B71?style=flat-square&logo=n8n)
+![Gemini](https://img.shields.io/badge/Google_Gemini-ИИ_Агент-4285F4?style=flat-square&logo=google)
+![Supabase](https://img.shields.io/badge/Supabase-pgvector_RAG-3ECF8E?style=flat-square&logo=supabase)
+![Status](https://img.shields.io/badge/Статус-MVP_Сдан-success?style=flat-square)
+
 ## Контекст проекта и статус
 - **Статус:** MVP успешно сдан и протестирован (Входящие события → ИИ-диалог + RAG → Эскалация / Follow-up). В данный момент проект поставлен на паузу со стороны клиента из-за пересмотра внутренних бюджетов.
 - **Кросс-функциональное взаимодействие:** Работала в тесной связке с командой разработчиков клиента: проектировала и согласовывала API-контракты интеграции и форматы Webhook payload-ов.
@@ -42,12 +47,30 @@
 
 ## Структура репозитория
 
-- [`/`](/) — Экспорты основных воркфлоу n8n в формате JSON.
-- [`/docs/`](/docs/) — Глубокая документация (`ARCHITECTURE.md`, `RUNBOOK.md`, `integrations.md`, `security.md`, `TEST_SCENARIOS.md`).
-- [`/prompts/`](/prompts/) — Текстовые файлы с инструкциями для ИИ-агентов.
-- [`/fixtures/`](/fixtures/) — Примеры JSON payload-ов для тестирования различных edge cases (Текст, Голос, Контакты).
-- [`/docker/`](/docker/) — Файл `docker-compose.yml` (n8n + Postgres/pgvector) для развертывания системы.
-- [`/assets/`](/assets/) — Схемы архитектуры и скриншоты дашборда аналитики.
+### Воркфлоу (n8n JSON)
+| Файл | Описание |
+| :--- | :--- |
+| [`00_rag_data_ingestion.json`](00_rag_data_ingestion.json) | **Подготовка данных.** Векторизация базы знаний и загрузка в Supabase (pgvector). |
+| [`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json) | **Мозг системы.** Основная логика: State machine, маршрутизация ИИ, RAG и эскалации. |
+| [`02_retention_followup_worker.json`](02_retention_followup_worker.json) | **Дожим.** Ежедневный запуск для возврата лидов, которые молчат более 24 часов. |
+| [`03_batch_insights_analyst.json`](03_batch_insights_analyst.json) | **Аналитика.** Сбор логов и LLM-анализ точек отвала и возражений. |
+| [`90_test_mock_provider.json`](90_test_mock_provider.json) | **Инструмент QA.** Симулятор входящих сообщений WhatsApp (Текст, Голос, Контакты) для тестов. |
+| [`99_global_incident_handler.json`](99_global_incident_handler.json) | **DLQ.** Глобальный перехватчик ошибок: запись в лог и отправка алертов в Telegram. |
+
+### Документация (`/docs`)
+* 📄 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — Компоненты системы, поток данных и машина состояний.
+* 🔌 [Integrations & API](./docs/integrations.md) — Контракты вебхуков и форматы JSON payload-ов.
+* 🔒 [Security](./docs/security.md) — Управление секретами, маскирование PII данных и guardrails.
+* 📖 [Runbook](./docs/RUNBOOK.md) — Руководство по устранению сбоев и матрица edge-кейсов.
+* 🧪 [Test Scenarios](./docs/TEST_SCENARIOS.md) — Тестовые сценарии (обработка RAG, негатива, перевод на менеджера).
+* 🚀 [Deployment](./docs/DEPLOYMENT.md) — Инфраструктура и стратегия деплоя.
+
+### Медиа (`/assets`)
+* 🗺️ [`00_system_architecture_diagram.jpg`](./assets/00_system_architecture_diagram.jpg) — Схема логики из Miro.
+* 📊 [`01_metrics_dashboard.png`](./assets/01_metrics_dashboard.png) — Дашборд аналитики.
+* 🗄️ [`02_supabase_pgvector.png`](./assets/02_supabase_pgvector.png) — Структура векторной БД (RAG).
+* 📝 [`03_scripts_db.png`](./assets/03_scripts_db.png) — Тексты скриптов.
+* 📝 [`04_crm_db.png`](./assets/04_crm_db.png) — CRM в Google Таблицах.
 
 ---
 
