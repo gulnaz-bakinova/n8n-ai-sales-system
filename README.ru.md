@@ -83,9 +83,8 @@
 1. Импортируйте JSON воркфлоу в ваш инстанс n8n.
 2. Настройте credentials (или используйте mock-данные), опираясь на файл [.env.example](/.env.example).
 3. Откройте воркфлоу **[90_test_mock_provider.json](/90_test_mock_provider.json)**.
-
-5. Скопируйте любой JSON-payload из папки [`/fixtures/`](/fixtures/) в ноду HTTP Request и выполните запуск.
-6. Откройте **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)**, чтобы наблюдать за маршрутизацией State Machine, работой RAG и парсингом JSON-ответов от ИИ.
+4. Скопируйте любой JSON-payload из папки [`/fixtures/`](/fixtures/) в ноду HTTP Request и выполните запуск.
+5. Откройте **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)**, чтобы наблюдать за маршрутизацией State Machine, работой RAG и парсингом JSON-ответов от ИИ.
 
 ---
 
