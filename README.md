@@ -29,7 +29,7 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 ---
 
 ## Engineering & Reliability Practices
-This project implements Senior-level automation patterns to ensure it survives in a harsh production environment:
+The architecture incorporates production-ready patterns to ensure fault tolerance and stable performance under load:
 
 *   **Idempotency & Deduplication:** Webhooks are checked against a `processed_events` database using unique `messageId`s. Duplicate events are dropped instantly to prevent double-replies.
 *   **Global Error Handling (DLQ):** Any unhandled exception across the system triggers a central Dead Letter Queue workflow, logging the exact node failure and alerting admins via Telegram.
