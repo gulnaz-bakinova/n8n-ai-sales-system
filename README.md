@@ -20,9 +20,15 @@
 
 The project is built as a highly modular, event-driven pipeline in **n8n**. 
 
-<img src="./assets/00_system_architecture_diagram.jpg" width="500" alt="System Architecture">
+<img src="./assets/00_system_architecture_diagram.jpg" width="400" alt="System Architecture">
 
 *See the visual representation of the business logic and state machine.*
+
+**Actual n8n Pipeline:**
+
+<img src="./assets/05_n8n_workflow_overview.png" width="1000" alt="n8n Workflow">
+
+*Production-ready n8n workflow with multimodal processing, RAG, and isolated state machine stages.*
 
 ### Core Business Features
 | Feature | Description |
@@ -33,6 +39,11 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 | 4. **Smart Lead Scoring** | The LLM evaluates user intent, assigns a score (0-100), and classifies the lead as Cold/Warm/Hot in the CRM.|
 | 5. **Batch Analytics Worker** | A cron-triggered workflow aggregates daily chat logs and uses an LLM to generate insights (drop-off points, top objections, success triggers). |
 | 6. **Automated Follow-ups** | Automatically re-engages users who have been inactive for >24 hours to boost conversion rates. |
+
+
+**Business Analytics Dashboard:**
+
+<img src="./assets/01_metrics_dashboard.png" width="800" alt="Metrics Dashboard">
 
 ---
 
