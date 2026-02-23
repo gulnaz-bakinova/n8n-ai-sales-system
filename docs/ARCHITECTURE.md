@@ -1,6 +1,6 @@
 # System Architecture
 
-This document outlines the high-level architecture and data flow of the n8n AI Sales Agent. The system is designed as an event-driven, multimodal pipeline with built-in reliability and safety guardrails.
+> This document outlines the high-level architecture and data flow of the n8n AI Sales Agent. The system is designed as an event-driven, multimodal pipeline with built-in reliability and safety guardrails.
 
 ## High-Level Components
 
@@ -39,11 +39,12 @@ This document outlines the high-level architecture and data flow of the n8n AI S
 ---
 
 ## Reliability & Observability Features
-
-1. **Dead Letter Queue (DLQ):** A global error trigger catches any node failure, logs the `execution_id` and payload to a dedicated Google Sheet, and sends a Telegram alert to the admin.
-2. **Retry Mechanism:** Exponential backoff (3 retries, 5s wait) is configured on all external API calls (LLM, Database) to handle temporary network/rate-limit issues.
-3. **Batch Analytics:** A standalone worker runs daily to aggregate chat logs, analyze drop-off points, and generate optimization reports.
-4. **Automated Follow-up:** A cron-triggered workflow checks for leads inactive for >24 hours and sends a re-engagement message.
+| Feature | Implementation |
+| :--- | :--- |
+| **Dead Letter Queue (DLQ)** | A global error trigger catches any node failure, logs the `execution_id` and payload to a dedicated Google Sheet, and sends a Telegram alert to the admin. |
+| **Retry Mechanism** | Exponential backoff (3 retries, 5s wait) is configured on all external API calls (LLM, Database) to handle temporary network/rate-limit issues. |
+| **Batch Analytics** | A standalone worker runs daily to aggregate chat logs, analyze drop-off points, and generate optimization reports. |
+| **Automated Follow-up** | A cron-triggered workflow checks for leads inactive for >24 hours and sends a re-engagement message. |
 
 ## State Machine & Handoff Policy
 
