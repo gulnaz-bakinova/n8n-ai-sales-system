@@ -61,3 +61,16 @@
 
 5. Скопируйте любой JSON-payload из папки [`/fixtures/`](/fixtures/) в ноду HTTP Request и выполните запуск.
 6. Откройте **[`01_core_ai_sales_agent.json`](01_core_ai_sales_agent.json)**, чтобы наблюдать за маршрутизацией State Machine, работой RAG и парсингом JSON-ответов от ИИ.
+
+---
+
+### 👤 Автор
+
+**Гульназ Бакинова**
+
+*Инженер по интеграциям и автоматизации (n8n / Low-code)*
+
+Будем на связи!
+[LinkedIn](https://www.linkedin.com/in/gulnaz-bakinova/)
+
+*Этот репозиторий опубликован только для портфолио и демонстрации*
