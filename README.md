@@ -1,5 +1,7 @@
 # n8n AI Sales & Qualification Agent (WhatsApp)
 
+*🇷🇺 [Читать на русском](README.ru.md)*)
+
 > **Core Positioning:** A production-ready WhatsApp sales assistant that drives conversations via a strict state-machine script, handles objections using a Vector Knowledge Base (RAG), qualifies leads (Scoring), executes automated follow-ups, and seamlessly hands off to human managers. Engineered for high reliability using deduplication, exponential retries, and centralized error handling.
 
 ## Project Context & Status
