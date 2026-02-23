@@ -66,10 +66,10 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 * 🚀 [Deployment](./docs/DEPLOYMENT.md) — Planned infrastructure and Docker setup.
 
 ### Assets (`/assets`)
-* 🗺️ [`00_system_architecture_diagram.jpg`](00_system_architecture_diagram.jpg) — Miro flow diagram.
-* 📊 [`01_metrics_dashboard.png`](01_metrics_dashboard.png) — Business analytics dashboard.
-* 🗄️ [`02_supabase_pgvector.png`](02_supabase_pgvector.png) — RAG vector database structure.
-* 📝 [`03_crm_and_scripts_db.png`](03_crm_and_scripts_db.png) — Google Sheets CRM and prompt variables.
+* 🗺️ [`00_system_architecture_diagram.jpg`](./assets/00_system_architecture_diagram.jpg) — Miro flow diagram.
+* 📊 [`01_metrics_dashboard.png`](./assets/01_metrics_dashboard.png) — Business analytics dashboard.
+* 🗄️ [`02_supabase_pgvector.png`](./assets/02_supabase_pgvector.png) — RAG vector database structure.
+* 📝 [`03_crm_and_scripts_db.png`](./assets/03_crm_and_scripts_db.png) — Google Sheets CRM and prompt variables.
 
 ---
 
