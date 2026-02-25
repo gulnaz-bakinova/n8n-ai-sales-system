@@ -38,7 +38,7 @@ Any messaging provider (ChatApp, Twilio, 360dialog, WATI) can be integrated by m
 
 1. **Google Gemini API:**
    - Models: `gemini-1.5-flash` or `gemini-pro` for agentic reasoning and classification.
-   - Embeddings: `text-embedding-001` for vectorizing the Knowledge Base.
+   - Embeddings: `text-embedding-004` for vectorizing the Knowledge Base.
 
 2. **Supabase (PostgreSQL + pgvector):**
    - Stores chunked documentation and their vector representations. Used natively via n8n's Vector Store integrations.
