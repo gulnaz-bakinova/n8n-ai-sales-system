@@ -2,7 +2,7 @@
 
 *🇷🇺 [Русская версия](README.ru.md)*
 
-> **Core Positioning:** A production-ready WhatsApp sales assistant that drives conversations via a strict state-machine script, handles objections using a Vector Knowledge Base (RAG), qualifies leads (Scoring), executes automated follow-ups, and seamlessly hands off to human managers. Engineered for high reliability using deduplication, exponential retries, and centralized error handling.
+> A production-ready WhatsApp sales assistant that drives conversations via a strict state-machine script, handles objections using a Vector Knowledge Base (RAG), qualifies leads (Scoring), executes automated follow-ups, and seamlessly hands off to human managers. Engineered for high reliability using deduplication, exponential retries, and centralized error handling.
 
 ![n8n](https://img.shields.io/badge/n8n-Workflow_Automation-EA4B71?style=flat-square&logo=n8n)
 ![Gemini](https://img.shields.io/badge/Google_Gemini-AI_Agent-4285F4?style=flat-square&logo=google)
@@ -55,11 +55,8 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 
 *   **Idempotency & Deduplication:** Webhooks are checked against a `processed_events` database using unique `messageId`s. Duplicate events are dropped instantly to prevent double-replies.
 *   **Global Error Handling (DLQ):** Any unhandled exception across the system triggers a central Dead Letter Queue workflow, logging the exact node failure and alerting admins via Telegram.
-*   **API Resilience:** All external API calls (LLM, Database) utilize Exponential Backoff (Retries) to survive rate limits (`HTTP 429`) and network blips.
 *   **Security & PII Masking:** A dedicated `PII_Guard` code node intercepts the payload, masking phone numbers and redacting credit card formats before data reaches the LLM or logs.
-*   **Human-in-the-Loop (Kill-Switch):** Managers can take over any chat by sending a `/stop` command, which updates the DB and physically severs the AI's ability to reply to that lead.
 *   **Externalized Prompts:** System instructions are decoupled from logic nodes and versioned as Markdown files (see [/prompts](/prompts) ).
-*   **Observability:** Structured logging of all execution stages in Google Sheets (`processed_events`, `dead_letters`) with `execution_id` tracing and `rag_source` tracking (LLM vs KB) for quality monitoring.
 
 ---
 
