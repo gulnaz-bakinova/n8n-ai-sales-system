@@ -11,4 +11,4 @@
 | **5. Multimedia (Audio)** | *(Voice message asking about price)* | Whisper STT -> Classify -> Respond | Transcribed, categorized as pricing query, answered | ✅ Pass |
 | **6. Lead Referral (Contact)** | "Это не ко мне, свяжитесь с директором: Айжан 87771112233" | Forward details -> `FORWARD_CONTACT_TO_MANAGER` | Extracted contact, confirmed to user, alerted manager | ✅ Pass |
 
-*Note: All scenarios are manually verified after any Prompt or Architecture update.*
+*Note: Re-verified after each prompt or architecture change.*
