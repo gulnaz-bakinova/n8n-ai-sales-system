@@ -33,7 +33,7 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 ### Core Business Features
 | Feature | Description |
 | :--- | :--- |
-| 1. **State Machine Routing** | Leads are strictly guided through a sales funnel (`Discovery` -> `Education` -> `Closing`) based on their CRM `stage_id`. |
+| 1. **State Machine Routing** | Leads are strictly guided through a sales funnel (`Discovery` -> `Education` -> `Closing`) towards autonomous registration. If a user deviates, the AI handles the query and smoothly steers them back into the script. |
 | 2. **RAG Knowledge Base** | Integrated with **Supabase (pgvector)** to dynamically retrieve official company policies and overcome client objections without LLM hallucinations. |
 | 3. **Multimodal Processing** | Native handling of Audio (Speech-to-Text via Whisper), Images (Vision AI), and vCard contacts, normalizing everything into a single text stream. |
 | 4. **Smart Lead Scoring** | The LLM evaluates user intent, assigns a score (0-100), and classifies the lead as Cold/Warm/Hot in the CRM.|
