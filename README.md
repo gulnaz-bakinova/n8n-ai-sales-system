@@ -48,6 +48,8 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 
 <img src="./assets/01_metrics_dashboard.png" width="800" alt="Metrics Dashboard">
 
+*Business Analytics Dashboard with key funnel metrics: total leads, hot leads, handoff rate, and error rate. Data is aggregated daily by the AI Analyst worker.*
+
 ---
 
 ## Engineering & Reliability Practices
