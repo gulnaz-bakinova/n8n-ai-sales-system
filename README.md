@@ -40,6 +40,8 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 | 5. **Batch Analytics Worker** | A cron-triggered workflow aggregates daily chat logs and uses an LLM to generate insights (drop-off points, top objections, success triggers). |
 | 6. **Automated Follow-ups** | Automatically re-engages users who have been inactive for >24 hours to boost conversion rates. |
 | 7. **No-Code CMS** | Sales scripts matrices are decoupled into Google Sheets, allowing business owners to update the bot's copy in real-time without code changes. |
+| 8. **Anti-Ban Protection** | Instantly detects negative sentiment or opt-outs, putting the lead in a Do Not Contact state to prevent WhatsApp account bans. |
+
 
 
 **Business Analytics Dashboard:**
@@ -57,6 +59,7 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 *   **Security & PII Masking:** A dedicated `PII_Guard` code node intercepts the payload, masking phone numbers and redacting credit card formats before data reaches the LLM or logs.
 *   **Human-in-the-Loop (Kill-Switch):** Managers can take over any chat by sending a `/stop` command, which updates the DB and physically severs the AI's ability to reply to that lead.
 *   **Externalized Prompts:** System instructions are decoupled from logic nodes and versioned as Markdown files (see [/prompts](/prompts) ).
+*   **Observability:** Structured logging of all execution stages in Google Sheets (`processed_events`, `dead_letters`) with `execution_id` tracing and `rag_source` tracking (LLM vs KB) for quality monitoring.
 
 ---
 
