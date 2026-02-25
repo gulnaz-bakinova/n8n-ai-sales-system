@@ -39,7 +39,7 @@ The project is built as a highly modular, event-driven pipeline in **n8n**.
 | 4. **Smart Lead Scoring** | The LLM evaluates user intent, assigns a score (0-100), and classifies the lead as Cold/Warm/Hot in the CRM.|
 | 5. **Batch Analytics Worker** | A cron-triggered workflow aggregates daily chat logs and uses an LLM to generate insights (drop-off points, top objections, success triggers). |
 | 6. **Automated Follow-ups** | Automatically re-engages users who have been inactive for >24 hours to boost conversion rates. |
-| 7. **No-Code CMS** | Sales scripts and objection matrices are decoupled into Google Sheets, allowing business owners to update the bot's copy in real-time without code changes. |
+| 7. **No-Code CMS** | Sales scripts matrices are decoupled into Google Sheets, allowing business owners to update the bot's copy in real-time without code changes. |
 
 
 **Business Analytics Dashboard:**
