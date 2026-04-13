@@ -107,7 +107,7 @@ Since the project is provider-agnostic, you can test the entire logic without a 
 
 **Gulnaz Bakinova**
 
-*Integration & Automation Engineer (n8n / Low-code)*
+*AI Automation & Applied AI Engineer · End-to-end automation for sales / support / ops*
 
 Let's connect!
 [LinkedIn](https://www.linkedin.com/in/gulnaz-bakinova/) 
