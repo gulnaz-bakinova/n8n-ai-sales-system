@@ -57,7 +57,7 @@ The architecture incorporates production-ready patterns to ensure fault toleranc
 
 *   **Idempotency & Deduplication:** Webhooks are checked against a `processed_events` database using unique `messageId`s. Duplicate events are dropped instantly to prevent double-replies.
 *   **Global Error Handling (DLQ):** Any unhandled exception across the system triggers a central Dead Letter Queue workflow, logging the exact node failure and alerting admins via Telegram.
-*   **Security & PII Masking:** A dedicated `PII_Guard` code node intercepts the payload, masking phone numbers and redacting credit card formats before data reaches the LLM or logs.
+*   **Input sanitization layer:** dedicated PII_Guard node intercepts all incoming payloads, masking phone numbers and redacting credit card data before reaching the LLM or logs.
 *   **Externalized Prompts:** System instructions are decoupled from logic nodes and versioned as Markdown files (see [/prompts](/prompts) ).
 
 ---
